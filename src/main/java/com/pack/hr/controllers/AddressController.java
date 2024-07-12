@@ -1,8 +1,11 @@
 package com.pack.hr.controllers;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,4 +64,27 @@ public class AddressController {
         boolean isDuplicate = addressService.isDuplicateAddress(city, employeeId);
         return ResponseEntity.ok(isDuplicate);
     }
+
+	@GetMapping("/employee/{employeeName}/date")
+	public ResponseEntity<List<AddressDTO>> getAddressByNameAndDate(
+	        @PathVariable String employeeName,
+	        @RequestParam String date) {
+
+	    LocalDateTime dateTime = LocalDateTime.parse(date + "T00:00:00");
+
+	    List<AddressDTO> addresses = addressService.getAddressByNameAndDate(employeeName, dateTime);
+	    return ResponseEntity.ok(addresses);
+	}
+	
+	@PostMapping("/employee-date")
+	public ResponseEntity<List<AddressDTO>> getAddressByNameAndOneDate(
+	        @RequestBody String name,
+	        @RequestBody String date) {
+
+	    LocalDateTime dateTime = LocalDateTime.parse(date + "T00:00:00");
+
+	    List<AddressDTO> addresses = addressService.getAddressByNameAndDate(name, dateTime);
+	    return ResponseEntity.ok(addresses);
+	}
+
 }
